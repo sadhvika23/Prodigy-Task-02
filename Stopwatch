@@ -1,0 +1,173 @@
+\\index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch Application</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stopwatch-container">
+        <h1>Stopwatch</h1>
+        <div id="display">00:00:00</div>
+        <div class="controls">
+            <button id="start-stop">Start</button>
+            <button id="reset">Reset</button>
+            <button id="lap">Lap</button>
+        </div>
+        <ul id="laps"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+\\script.js
+
+let startTime, elapsedTime = 0, timerInterval;
+let running = false;
+
+const display = document.getElementById('display');
+const startStopButton = document.getElementById('start-stop');
+const resetButton = document.getElementById('reset');
+const lapButton = document.getElementById('lap');
+const lapsContainer = document.getElementById('laps');
+
+function timeToString(time) {
+    let diffInHrs = time / 3600000;
+    let hh = Math.floor(diffInHrs);
+
+    let diffInMin = (diffInHrs - hh) * 60;
+    let mm = Math.floor(diffInMin);
+
+    let diffInSec = (diffInMin - mm) * 60;
+    let ss = Math.floor(diffInSec);
+
+    let formattedHH = hh.toString().padStart(2, "0");
+    let formattedMM = mm.toString().padStart(2, "0");
+    let formattedSS = ss.toString().padStart(2, "0");
+
+    return `${formattedHH}:${formattedMM}:${formattedSS}`;
+}
+
+function start() {
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function printTime() {
+        elapsedTime = Date.now() - startTime;
+        display.innerHTML = timeToString(elapsedTime);
+    }, 1000);
+    running = true;
+    startStopButton.innerHTML = "Pause";
+}
+
+function stop() {
+    clearInterval(timerInterval);
+    running = false;
+    startStopButton.innerHTML = "Start";
+}
+
+function reset() {
+    clearInterval(timerInterval);
+    display.innerHTML = "00:00:00";
+    elapsedTime = 0;
+    running = false;
+    startStopButton.innerHTML = "Start";
+    lapsContainer.innerHTML = "";
+}
+
+function lap() {
+    if (running) {
+        const lapTime = timeToString(elapsedTime);
+        const lapElement = document.createElement('li');
+        lapElement.innerText = lapTime;
+        lapsContainer.appendChild(lapElement);
+    }
+}
+
+startStopButton.addEventListener('click', function() {
+    if (running) {
+        stop();
+    } else {
+        start();
+    }
+});
+
+resetButton.addEventListener('click', reset);
+lapButton.addEventListener('click', lap);
+
+
+\\styles.js
+
+let startTime, elapsedTime = 0, timerInterval;
+let running = false;
+
+const display = document.getElementById('display');
+const startStopButton = document.getElementById('start-stop');
+const resetButton = document.getElementById('reset');
+const lapButton = document.getElementById('lap');
+const lapsContainer = document.getElementById('laps');
+
+function timeToString(time) {
+    let diffInHrs = time / 3600000;
+    let hh = Math.floor(diffInHrs);
+
+    let diffInMin = (diffInHrs - hh) * 60;
+    let mm = Math.floor(diffInMin);
+
+    let diffInSec = (diffInMin - mm) * 60;
+    let ss = Math.floor(diffInSec);
+
+    let formattedHH = hh.toString().padStart(2, "0");
+    let formattedMM = mm.toString().padStart(2, "0");
+    let formattedSS = ss.toString().padStart(2, "0");
+
+    return `${formattedHH}:${formattedMM}:${formattedSS}`;
+}
+
+function start() {
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function printTime() {
+        elapsedTime = Date.now() - startTime;
+        display.innerHTML = timeToString(elapsedTime);
+    }, 1000);
+    running = true;
+    startStopButton.innerHTML = "Pause";
+}
+
+function stop() {
+    clearInterval(timerInterval);
+    running = false;
+    startStopButton.innerHTML = "Start";
+}
+
+function reset() {
+    clearInterval(timerInterval);
+    display.innerHTML = "00:00:00";
+    elapsedTime = 0;
+    running = false;
+    startStopButton.innerHTML = "Start";
+    lapsContainer.innerHTML = "";
+}
+
+function lap() {
+    if (running) {
+        const lapTime = timeToString(elapsedTime);
+        const lapElement = document.createElement('li');
+        lapElement.innerText = lapTime;
+        lapsContainer.appendChild(lapElement);
+    }
+}
+
+startStopButton.addEventListener('click', function() {
+    if (running) {
+        stop();
+    } else {
+        start();
+    }
+});
+
+resetButton.addEventListener('click', reset);
+lapButton.addEventListener('click', lap);
